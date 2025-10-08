@@ -12,18 +12,101 @@ import hmac
 from hashlib import sha256
 from dotenv import load_dotenv
 import os
+import boto3
+from botocore.exceptions import ClientError
 
 # Load environment variables
 load_dotenv()
 
-app = FastAPI(title="Simple ElevenLabs Webhook", version="1.0.0")
+app = FastAPI(title="ElevenLabs Webhook Server with AWS", version="2.0.0")
 
 # Webhook secret
 WEBHOOK_SECRET = os.getenv("ELEVENLABS_WEBHOOK_SECRET", "")
 
+# AWS Configuration
+AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
+AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY_ID", "")
+AWS_SECRET_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "")
+AWS_SESSION_TOKEN = os.getenv("AWS_SESSION_TOKEN", "")
+DYNAMODB_TABLE = os.getenv("DYNAMODB_TABLE_NAME", "")
+S3_BUCKET = os.getenv("S3_BUCKET_NAME", "")
+
+# Initialize AWS clients
+dynamodb = None
+s3_client = None
+
+if AWS_ACCESS_KEY and AWS_SECRET_KEY:
+    try:
+        dynamodb = boto3.resource(
+            'dynamodb',
+            aws_access_key_id=AWS_ACCESS_KEY,
+            aws_secret_access_key=AWS_SECRET_KEY,
+            aws_session_token=AWS_SESSION_TOKEN if AWS_SESSION_TOKEN else None,
+            region_name=AWS_REGION
+        )
+        s3_client = boto3.client(
+            's3',
+            aws_access_key_id=AWS_ACCESS_KEY,
+            aws_secret_access_key=AWS_SECRET_KEY,
+            aws_session_token=AWS_SESSION_TOKEN if AWS_SESSION_TOKEN else None,
+            region_name=AWS_REGION
+        )
+        print(f"✅ AWS clients initialized (Region: {AWS_REGION})")
+    except Exception as e:
+        print(f"⚠️  AWS initialization failed: {e}")
+
 # Data directory
 data_dir = Path("webhook_data")
 data_dir.mkdir(exist_ok=True)
+
+def save_to_dynamodb(conversation_id: str, timestamp: int, call_data: dict, analysis: dict) -> bool:
+    """Save call data to DynamoDB"""
+    if not dynamodb or not DYNAMODB_TABLE:
+        print(f"   ⚠️  DynamoDB not configured, skipping")
+        return False
+
+    try:
+        table = dynamodb.Table(DYNAMODB_TABLE)
+
+        item = {
+            'conversation_id': conversation_id,
+            'timestamp': timestamp,
+            'agent_id': call_data.get('agent_id', ''),
+            'summary': analysis.get('transcript_summary', ''),
+            'call_successful': analysis.get('call_successful', ''),
+            'duration_secs': call_data.get('metadata', {}).get('call_duration_secs', 0),
+            'transcript_length': len(call_data.get('transcript', [])),
+            'created_at': datetime.now().isoformat()
+        }
+
+        table.put_item(Item=item)
+        print(f"   ✅ DynamoDB: Saved to table '{DYNAMODB_TABLE}'")
+        return True
+    except ClientError as e:
+        print(f"   ❌ DynamoDB save failed: {e}")
+        return False
+
+def save_to_s3(conversation_id: str, data: dict) -> bool:
+    """Save full call data to S3"""
+    if not s3_client or not S3_BUCKET:
+        print(f"   ⚠️  S3 not configured, skipping")
+        return False
+
+    try:
+        s3_key = f"calls/{conversation_id}/{conversation_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+
+        s3_client.put_object(
+            Bucket=S3_BUCKET,
+            Key=s3_key,
+            Body=json.dumps(data, indent=2),
+            ContentType='application/json'
+        )
+
+        print(f"   ✅ S3: Uploaded to s3://{S3_BUCKET}/{s3_key}")
+        return True
+    except ClientError as e:
+        print(f"   ❌ S3 upload failed: {e}")
+        return False
 
 @app.post("/elevenlabs-webhook")
 async def webhook(request: Request):
@@ -133,7 +216,7 @@ async def webhook(request: Request):
                 print(f"\n📝 SUMMARY:")
                 print(f"   {summary[:300]}...")
 
-                # 8. SAVE TO FILE
+                # 8. SAVE TO FILE (Local Backup)
                 conv_id = call_data.get('conversation_id', 'unknown')
                 filename = f"call_{conv_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
                 filepath = data_dir / filename
@@ -141,15 +224,25 @@ async def webhook(request: Request):
                 with open(filepath, "w") as f:
                     json.dump(data, f, indent=2)
 
-                print(f"\n💾 SAVED:")
-                print(f"   File: {filepath}")
+                print(f"\n💾 STORAGE (3 methods):")
+                print(f"   Local File: {filepath}")
 
                 # Save to log
                 log_file = data_dir / "webhook_log.jsonl"
                 with open(log_file, "a") as f:
                     f.write(json.dumps(data) + "\n")
+                print(f"   Local Log: {log_file}")
 
-                print(f"   Log: {log_file}")
+                # 9. SAVE TO DYNAMODB
+                save_to_dynamodb(
+                    conversation_id=conv_id,
+                    timestamp=event_timestamp,
+                    call_data=call_data,
+                    analysis=analysis
+                )
+
+                # 10. SAVE TO S3
+                save_to_s3(conversation_id=conv_id, data=data)
 
             elif event_type == "post_call_audio":
                 print(f"   ⚠️  WRONG EVENT TYPE: This is audio, not transcription!")
@@ -209,7 +302,21 @@ async def recent_calls():
 
 if __name__ == "__main__":
     import uvicorn
-    print("🚀 Starting Simple ElevenLabs Webhook Server...")
-    print(f"📁 Data directory: {data_dir.absolute()}")
-    print(f"🔐 Webhook secret configured: {'YES' if WEBHOOK_SECRET else 'NO'}")
+    print("="*80)
+    print("🚀 Starting ElevenLabs Webhook Server with AWS Integration")
+    print("="*80)
+    print(f"\n📁 Local Storage:")
+    print(f"   Data directory: {data_dir.absolute()}")
+    print(f"\n🔐 Security:")
+    print(f"   Webhook secret: {'✅ Configured' if WEBHOOK_SECRET else '❌ Missing'}")
+    print(f"\n☁️  AWS Configuration:")
+    print(f"   Region: {AWS_REGION}")
+    print(f"   DynamoDB Table: {DYNAMODB_TABLE if DYNAMODB_TABLE else '❌ Not configured'}")
+    print(f"   S3 Bucket: {S3_BUCKET if S3_BUCKET else '❌ Not configured'}")
+    print(f"   Status: {'✅ Connected' if (dynamodb and s3_client) else '⚠️  Not connected'}")
+    print(f"\n💾 Storage Methods:")
+    print(f"   1. Local files: ✅ Active")
+    print(f"   2. DynamoDB: {'✅ Active' if dynamodb else '⚠️  Disabled'}")
+    print(f"   3. S3: {'✅ Active' if s3_client else '⚠️  Disabled'}")
+    print("="*80 + "\n")
     uvicorn.run(app, host="0.0.0.0", port=8000)
