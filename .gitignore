@@ -26,4 +26,3 @@ logs/
 .vscode/
 .idea/
 EOF
-; git add -A; git status --porcelain=v1
