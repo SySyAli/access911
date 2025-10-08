@@ -1,0 +1,29 @@
+# Node
+node_modules/
+.DS_Store
+.env
+.dist/
+dist/
+build/
+coverage/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env*/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Logs
+logs/
+*.log
+
+# Editor
+.vscode/
+.idea/
+EOF
+; git add -A; git status --porcelain=v1
