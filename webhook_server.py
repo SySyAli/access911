@@ -2,13 +2,42 @@ from fastapi import FastAPI, Request, HTTPException
 from datetime import datetime
 import json
 import os
+import hmac
+import hashlib
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = FastAPI(title="ElevenLabs Webhook Server", version="1.0.0")
+
+# ElevenLabs webhook secret from environment
+WEBHOOK_SECRET = os.getenv("ELEVENLABS_WEBHOOK_SECRET")
 
 # Create data directory if it doesn't exist
 data_dir = Path("webhook_data")
 data_dir.mkdir(exist_ok=True)
+
+def verify_webhook_signature(payload: bytes, signature: str, secret: str) -> bool:
+    """
+    Verify ElevenLabs webhook signature
+    """
+    if not signature:
+        return False
+
+    # Remove the 'sha256=' prefix if present
+    if signature.startswith('sha256='):
+        signature = signature[7:]
+
+    # Create expected signature
+    expected_signature = hmac.new(
+        secret.encode('utf-8'),
+        payload,
+        hashlib.sha256
+    ).hexdigest()
+
+    return hmac.compare_digest(expected_signature, signature)
 
 @app.post("/elevenlabs-webhook")
 async def elevenlabs_webhook(request: Request):
@@ -16,8 +45,17 @@ async def elevenlabs_webhook(request: Request):
     Webhook endpoint to receive ElevenLabs call transcription data
     """
     try:
-        # Get the JSON payload
-        data = await request.json()
+        # Get the raw body and signature
+        body = await request.body()
+        signature = request.headers.get("xi-signature", "")
+
+        # Verify webhook signature
+        if not verify_webhook_signature(body, signature, WEBHOOK_SECRET):
+            print(f"❌ Invalid webhook signature: {signature}")
+            raise HTTPException(status_code=401, detail="Invalid webhook signature")
+
+        # Parse JSON payload
+        data = json.loads(body.decode('utf-8'))
 
         # Add timestamp to the data
         data["webhook_received_at"] = datetime.now().isoformat()
@@ -26,7 +64,7 @@ async def elevenlabs_webhook(request: Request):
         conversation_id = data.get("conversation_id", "unknown")
         event_type = data.get("event_type", "unknown")
 
-        print(f"📞 Received webhook: {event_type} for conversation {conversation_id}")
+        print(f"📞 Received verified webhook: {event_type} for conversation {conversation_id}")
 
         # Save to individual JSON file
         filename = f"call_{conversation_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
@@ -48,6 +86,9 @@ async def elevenlabs_webhook(request: Request):
 
         return {"status": "success", "message": "Webhook received and processed"}
 
+    except json.JSONDecodeError as e:
+        print(f"❌ Invalid JSON payload: {str(e)}")
+        raise HTTPException(status_code=400, detail=f"Invalid JSON payload: {str(e)}")
     except Exception as e:
         print(f"❌ Error processing webhook: {str(e)}")
         raise HTTPException(status_code=400, detail=f"Error processing webhook: {str(e)}")
