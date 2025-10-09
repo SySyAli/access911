@@ -1,0 +1,503 @@
+[
+  {
+    "id": "CALL-2025-1243",
+    "timestamp": "2025-10-08T14:32:18Z",
+    "callDuration": "4:32",
+    "type": "Medical Emergency",
+    "severity": "critical",
+    "location": {
+      "address": "1200 Broadway, Nashville, TN",
+      "coordinates": [-86.7816, 36.1627]
+    },
+    "caller": {
+      "name": "Sarah Johnson",
+      "phone": "(615) 555-0123",
+      "relation": "Store Manager"
+    },
+    "description": "Cardiac arrest reported, patient unconscious",
+    "responseTime": "3:45",
+    "unitsDispatched": ["AMB-12", "ENG-5"],
+    "outcome": "Patient stabilized and transported to Vanderbilt Medical",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #4 - Mike Rodriguez",
+    "recordingUrl": "/recordings/2025/10/08/call-1243.mp3",
+    "transcriptAvailable": true,
+    "tags": ["cardiac", "critical", "ambulance"]
+  },
+  {
+    "id": "CALL-2025-1242",
+    "timestamp": "2025-10-08T14:28:45Z",
+    "callDuration": "6:12",
+    "type": "Structure Fire",
+    "severity": "high",
+    "location": {
+      "address": "2100 West End Ave, Nashville, TN",
+      "coordinates": [-86.8027, 36.1486]
+    },
+    "caller": {
+      "name": "Marcus Thompson",
+      "phone": "(615) 555-0234",
+      "relation": "Resident"
+    },
+    "description": "Smoke visible from second floor apartment, possible kitchen fire",
+    "responseTime": "4:12",
+    "unitsDispatched": ["ENG-9", "TRUCK-3", "BAT-1"],
+    "outcome": "Fire contained to kitchen, no injuries",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #2 - Emily Chen",
+    "recordingUrl": "/recordings/2025/10/08/call-1242.mp3",
+    "transcriptAvailable": true,
+    "tags": ["fire", "structure", "residential"]
+  },
+  {
+    "id": "CALL-2025-1241",
+    "timestamp": "2025-10-08T14:25:33Z",
+    "callDuration": "3:18",
+    "type": "Traffic Accident",
+    "severity": "medium",
+    "location": {
+      "address": "I-40 & Charlotte Ave, Nashville, TN",
+      "coordinates": [-86.7889, 36.1699]
+    },
+    "caller": {
+      "name": "Anonymous",
+      "phone": "(615) 555-0345",
+      "relation": "Witness"
+    },
+    "description": "Multi-vehicle collision on highway, 3 cars involved, minor injuries",
+    "responseTime": "5:20",
+    "unitsDispatched": ["AMB-8", "POL-14", "POL-19"],
+    "outcome": "2 transported with minor injuries, scene cleared",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #1 - James Wilson",
+    "recordingUrl": "/recordings/2025/10/08/call-1241.mp3",
+    "transcriptAvailable": true,
+    "tags": ["accident", "highway", "traffic"]
+  },
+  {
+    "id": "CALL-2025-1240",
+    "timestamp": "2025-10-08T14:20:15Z",
+    "callDuration": "5:45",
+    "type": "Assault in Progress",
+    "severity": "high",
+    "location": {
+      "address": "500 James Robertson Pkwy, Nashville, TN",
+      "coordinates": [-86.7744, 36.1673]
+    },
+    "caller": {
+      "name": "Lisa Martinez",
+      "phone": "(615) 555-0456",
+      "relation": "Bystander"
+    },
+    "description": "Physical altercation outside bar, multiple individuals involved",
+    "responseTime": "2:55",
+    "unitsDispatched": ["POL-7", "POL-22", "POL-18"],
+    "outcome": "2 suspects detained, 1 transported for medical evaluation",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #3 - Rachel Green",
+    "recordingUrl": "/recordings/2025/10/08/call-1240.mp3",
+    "transcriptAvailable": true,
+    "tags": ["assault", "police", "arrest"]
+  },
+  {
+    "id": "CALL-2025-1239",
+    "timestamp": "2025-10-08T14:15:22Z",
+    "callDuration": "2:35",
+    "type": "Medical Emergency",
+    "severity": "medium",
+    "location": {
+      "address": "215 Centennial Park Dr, Nashville, TN",
+      "coordinates": [-86.8132, 36.1447]
+    },
+    "caller": {
+      "name": "Robert Chen",
+      "phone": "(615) 555-0567",
+      "relation": "Family Member"
+    },
+    "description": "Elderly person fell in park, possible hip fracture",
+    "responseTime": "4:45",
+    "unitsDispatched": ["AMB-15"],
+    "outcome": "Patient transported to St. Thomas Midtown",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #4 - Mike Rodriguez",
+    "recordingUrl": "/recordings/2025/10/08/call-1239.mp3",
+    "transcriptAvailable": true,
+    "tags": ["elderly", "fall", "medical"]
+  },
+  {
+    "id": "CALL-2025-1238",
+    "timestamp": "2025-10-08T13:58:40Z",
+    "callDuration": "1:52",
+    "type": "Suspicious Activity",
+    "severity": "low",
+    "location": {
+      "address": "450 Church St, Nashville, TN",
+      "coordinates": [-86.7758, 36.1612]
+    },
+    "caller": {
+      "name": "David Park",
+      "phone": "(615) 555-0678",
+      "relation": "Business Owner"
+    },
+    "description": "Individual loitering around closed storefront for extended period",
+    "responseTime": "8:15",
+    "unitsDispatched": ["POL-31"],
+    "outcome": "Subject questioned and moved along, no arrest",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #2 - Emily Chen",
+    "recordingUrl": "/recordings/2025/10/08/call-1238.mp3",
+    "transcriptAvailable": false,
+    "tags": ["suspicious", "patrol"]
+  },
+  {
+    "id": "CALL-2025-1237",
+    "timestamp": "2025-10-08T13:45:12Z",
+    "callDuration": "8:23",
+    "type": "Building Collapse",
+    "severity": "critical",
+    "location": {
+      "address": "300 Korean Veterans Blvd, Nashville, TN",
+      "coordinates": [-86.7695, 36.1589]
+    },
+    "caller": {
+      "name": "Tom Richardson",
+      "phone": "(615) 555-0789",
+      "relation": "Site Supervisor"
+    },
+    "description": "Partial roof collapse at construction site, 2 workers potentially trapped",
+    "responseTime": "3:20",
+    "unitsDispatched": ["ENG-2", "TRUCK-1", "RESCUE-1", "AMB-3", "AMB-6", "BAT-1"],
+    "outcome": "Both workers rescued, 1 critical, 1 stable - transported to trauma center",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #1 - James Wilson",
+    "recordingUrl": "/recordings/2025/10/08/call-1237.mp3",
+    "transcriptAvailable": true,
+    "tags": ["collapse", "rescue", "critical", "construction"]
+  },
+  {
+    "id": "CALL-2025-1236",
+    "timestamp": "2025-10-08T13:32:55Z",
+    "callDuration": "4:10",
+    "type": "Gas Leak",
+    "severity": "high",
+    "location": {
+      "address": "1901 Broadway, Nashville, TN",
+      "coordinates": [-86.7989, 36.1518]
+    },
+    "caller": {
+      "name": "Patricia Williams",
+      "phone": "(615) 555-0890",
+      "relation": "Resident"
+    },
+    "description": "Strong gas odor throughout apartment building",
+    "responseTime": "6:30",
+    "unitsDispatched": ["ENG-11", "HAZ-1"],
+    "outcome": "Gas company notified, leak isolated, building evacuated as precaution",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #3 - Rachel Green",
+    "recordingUrl": "/recordings/2025/10/08/call-1236.mp3",
+    "transcriptAvailable": true,
+    "tags": ["hazmat", "gas", "evacuation"]
+  },
+  {
+    "id": "CALL-2025-1235",
+    "timestamp": "2025-10-08T13:20:18Z",
+    "callDuration": "2:45",
+    "type": "Burglary in Progress",
+    "severity": "high",
+    "location": {
+      "address": "3210 West End Ave, Nashville, TN",
+      "coordinates": [-86.8156, 36.1479]
+    },
+    "caller": {
+      "name": "Jennifer Lee",
+      "phone": "(615) 555-0901",
+      "relation": "Homeowner"
+    },
+    "description": "Breaking glass heard, suspects inside residence",
+    "responseTime": "2:15",
+    "unitsDispatched": ["POL-5", "POL-12", "K9-3"],
+    "outcome": "1 suspect apprehended fleeing scene, stolen items recovered",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #4 - Mike Rodriguez",
+    "recordingUrl": "/recordings/2025/10/08/call-1235.mp3",
+    "transcriptAvailable": true,
+    "tags": ["burglary", "arrest", "k9"]
+  },
+  {
+    "id": "CALL-2025-1234",
+    "timestamp": "2025-10-08T13:05:33Z",
+    "callDuration": "3:52",
+    "type": "Vehicle Fire",
+    "severity": "medium",
+    "location": {
+      "address": "I-24 S Mile Marker 52, Nashville, TN",
+      "coordinates": [-86.7234, 36.1123]
+    },
+    "caller": {
+      "name": "Kevin Brown",
+      "phone": "(615) 555-1012",
+      "relation": "Motorist"
+    },
+    "description": "Car fire on highway shoulder, smoke visible",
+    "responseTime": "7:20",
+    "unitsDispatched": ["ENG-14"],
+    "outcome": "Fire extinguished, vehicle total loss, no injuries",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #2 - Emily Chen",
+    "recordingUrl": "/recordings/2025/10/08/call-1234.mp3",
+    "transcriptAvailable": true,
+    "tags": ["vehicle", "fire", "highway"]
+  },
+  {
+    "id": "CALL-2025-1233",
+    "timestamp": "2025-10-08T12:48:20Z",
+    "callDuration": "2:15",
+    "type": "Welfare Check",
+    "severity": "low",
+    "location": {
+      "address": "825 Rosa L Parks Blvd, Nashville, TN",
+      "coordinates": [-86.7891, 36.1734]
+    },
+    "caller": {
+      "name": "Nancy Davis",
+      "phone": "(615) 555-1123",
+      "relation": "Neighbor"
+    },
+    "description": "Elderly neighbor hasn't been seen in 3 days, not answering door",
+    "responseTime": "12:45",
+    "unitsDispatched": ["POL-28"],
+    "outcome": "Subject found safe inside, was visiting family",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #1 - James Wilson",
+    "recordingUrl": "/recordings/2025/10/08/call-1233.mp3",
+    "transcriptAvailable": false,
+    "tags": ["welfare", "elderly"]
+  },
+  {
+    "id": "CALL-2025-1232",
+    "timestamp": "2025-10-08T12:35:42Z",
+    "callDuration": "5:28",
+    "type": "Overdose",
+    "severity": "critical",
+    "location": {
+      "address": "712 Church St, Nashville, TN",
+      "coordinates": [-86.7801, 36.1623]
+    },
+    "caller": {
+      "name": "Amanda White",
+      "phone": "(615) 555-1234",
+      "relation": "Friend"
+    },
+    "description": "Unresponsive individual, suspected opioid overdose",
+    "responseTime": "3:10",
+    "unitsDispatched": ["AMB-4", "POL-9"],
+    "outcome": "Narcan administered on scene, patient revived and transported",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #3 - Rachel Green",
+    "recordingUrl": "/recordings/2025/10/08/call-1232.mp3",
+    "transcriptAvailable": true,
+    "tags": ["overdose", "narcan", "critical"]
+  },
+  {
+    "id": "CALL-2025-1231",
+    "timestamp": "2025-10-08T12:18:55Z",
+    "callDuration": "1:58",
+    "type": "Noise Complaint",
+    "severity": "low",
+    "location": {
+      "address": "1600 Division St, Nashville, TN",
+      "coordinates": [-86.7934, 36.1523]
+    },
+    "caller": {
+      "name": "George Miller",
+      "phone": "(615) 555-1345",
+      "relation": "Resident"
+    },
+    "description": "Loud music from neighboring unit, ongoing issue",
+    "responseTime": "15:30",
+    "unitsDispatched": ["POL-31"],
+    "outcome": "Warning issued to resident, music turned down",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #4 - Mike Rodriguez",
+    "recordingUrl": "/recordings/2025/10/08/call-1231.mp3",
+    "transcriptAvailable": false,
+    "tags": ["noise", "complaint"]
+  },
+  {
+    "id": "CALL-2025-1230",
+    "timestamp": "2025-10-08T11:52:10Z",
+    "callDuration": "4:35",
+    "type": "Domestic Disturbance",
+    "severity": "high",
+    "location": {
+      "address": "2845 Lebanon Pike, Nashville, TN",
+      "coordinates": [-86.7156, 36.1845]
+    },
+    "caller": {
+      "name": "Anonymous",
+      "phone": "(615) 555-1456",
+      "relation": "Neighbor"
+    },
+    "description": "Loud arguing and sounds of items breaking",
+    "responseTime": "4:05",
+    "unitsDispatched": ["POL-15", "POL-23"],
+    "outcome": "Parties separated, no arrests made, follow-up scheduled",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #2 - Emily Chen",
+    "recordingUrl": "/recordings/2025/10/08/call-1230.mp3",
+    "transcriptAvailable": true,
+    "tags": ["domestic", "disturbance"]
+  },
+  {
+    "id": "CALL-2025-1229",
+    "timestamp": "2025-10-08T11:35:28Z",
+    "callDuration": "3:12",
+    "type": "Water Main Break",
+    "severity": "medium",
+    "location": {
+      "address": "4th Ave & Commerce St, Nashville, TN",
+      "coordinates": [-86.7789, 36.1601]
+    },
+    "caller": {
+      "name": "Steven Adams",
+      "phone": "(615) 555-1567",
+      "relation": "Pedestrian"
+    },
+    "description": "Water flooding street, possible main break",
+    "responseTime": "18:20",
+    "unitsDispatched": ["ENG-7"],
+    "outcome": "Metro Water notified, street closed pending repairs",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #1 - James Wilson",
+    "recordingUrl": "/recordings/2025/10/08/call-1229.mp3",
+    "transcriptAvailable": false,
+    "tags": ["water", "infrastructure"]
+  },
+  {
+    "id": "CALL-2025-1228",
+    "timestamp": "2025-10-08T11:20:45Z",
+    "callDuration": "6:40",
+    "type": "Armed Robbery",
+    "severity": "critical",
+    "location": {
+      "address": "1515 Dickerson Pike, Nashville, TN",
+      "coordinates": [-86.7534, 36.1889]
+    },
+    "caller": {
+      "name": "Carlos Ramirez",
+      "phone": "(615) 555-1678",
+      "relation": "Store Clerk"
+    },
+    "description": "Armed individual demanding cash from convenience store",
+    "responseTime": "2:45",
+    "unitsDispatched": ["POL-3", "POL-11", "POL-17", "POL-24"],
+    "outcome": "Suspect fled before arrival, investigation ongoing",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #3 - Rachel Green",
+    "recordingUrl": "/recordings/2025/10/08/call-1228.mp3",
+    "transcriptAvailable": true,
+    "tags": ["robbery", "armed", "investigation"]
+  },
+  {
+    "id": "CALL-2025-1227",
+    "timestamp": "2025-10-08T11:08:22Z",
+    "callDuration": "2:50",
+    "type": "Animal Control",
+    "severity": "low",
+    "location": {
+      "address": "3150 Nolensville Pike, Nashville, TN",
+      "coordinates": [-86.7678, 36.1234]
+    },
+    "caller": {
+      "name": "Michelle Taylor",
+      "phone": "(615) 555-1789",
+      "relation": "Resident"
+    },
+    "description": "Aggressive dog running loose in neighborhood",
+    "responseTime": "22:15",
+    "unitsDispatched": ["ANI-2"],
+    "outcome": "Dog secured, owner located and cited",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #4 - Mike Rodriguez",
+    "recordingUrl": "/recordings/2025/10/08/call-1227.mp3",
+    "transcriptAvailable": false,
+    "tags": ["animal", "dog"]
+  },
+  {
+    "id": "CALL-2025-1226",
+    "timestamp": "2025-10-08T10:45:15Z",
+    "callDuration": "4:18",
+    "type": "Child in Danger",
+    "severity": "critical",
+    "location": {
+      "address": "1200 12th Ave S, Nashville, TN",
+      "coordinates": [-86.7856, 36.1445]
+    },
+    "caller": {
+      "name": "Rebecca Moore",
+      "phone": "(615) 555-1890",
+      "relation": "Teacher"
+    },
+    "description": "Child showing signs of abuse, visible injuries",
+    "responseTime": "3:55",
+    "unitsDispatched": ["POL-6", "DCS-1"],
+    "outcome": "Child protective services involved, investigation ongoing",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #2 - Emily Chen",
+    "recordingUrl": "/recordings/2025/10/08/call-1226.mp3",
+    "transcriptAvailable": true,
+    "tags": ["child", "abuse", "dcs", "critical"]
+  },
+  {
+    "id": "CALL-2025-1225",
+    "timestamp": "2025-10-08T10:28:40Z",
+    "callDuration": "3:25",
+    "type": "Hazmat Spill",
+    "severity": "high",
+    "location": {
+      "address": "I-65 N Mile Marker 88, Nashville, TN",
+      "coordinates": [-86.7445, 36.2234]
+    },
+    "caller": {
+      "name": "Thomas Garcia",
+      "phone": "(615) 555-1901",
+      "relation": "Truck Driver"
+    },
+    "description": "Chemical tanker leak on highway after collision",
+    "responseTime": "5:40",
+    "unitsDispatched": ["HAZ-1", "HAZ-2", "ENG-6", "BAT-2"],
+    "outcome": "Area contained and cleaned, highway closed 4 hours",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #1 - James Wilson",
+    "recordingUrl": "/recordings/2025/10/08/call-1225.mp3",
+    "transcriptAvailable": true,
+    "tags": ["hazmat", "chemical", "highway", "spill"]
+  },
+  {
+    "id": "CALL-2025-1224",
+    "timestamp": "2025-10-08T10:12:55Z",
+    "callDuration": "2:32",
+    "type": "Psychiatric Emergency",
+    "severity": "medium",
+    "location": {
+      "address": "555 Mainstream Dr, Nashville, TN",
+      "coordinates": [-86.8234, 36.1567]
+    },
+    "caller": {
+      "name": "Dr. Susan Anderson",
+      "phone": "(615) 555-2012",
+      "relation": "Healthcare Provider"
+    },
+    "description": "Patient threatening self-harm, needs transport to facility",
+    "responseTime": "6:20",
+    "unitsDispatched": ["AMB-11", "POL-20"],
+    "outcome": "Patient transported voluntarily to psychiatric facility",
+    "status": "completed",
+    "dispatchedBy": "Dispatcher #3 - Rachel Green",
+    "recordingUrl": "/recordings/2025/10/08/call-1224.mp3",
+    "transcriptAvailable": true,
+    "tags": ["psychiatric", "mental-health", "transport"]
+  }
+]
+
