@@ -1,0 +1,114 @@
+[
+  {
+    "id": "EMG-001",
+    "time": "2025-10-08T14:32:00",
+    "severity": "critical",
+    "type": "Medical Emergency",
+    "location": {
+      "address": "1200 Broadway, Nashville, TN",
+      "coordinates": [-86.7816, 36.1627]
+    },
+    "description": "Cardiac arrest reported, patient unconscious",
+    "status": "active",
+    "caller": "Store Manager",
+    "units": ["AMB-12", "ENG-5"]
+  },
+  {
+    "id": "EMG-002",
+    "time": "2025-10-08T14:28:00",
+    "severity": "high",
+    "type": "Structure Fire",
+    "location": {
+      "address": "2100 West End Ave, Nashville, TN",
+      "coordinates": [-86.8027, 36.1486]
+    },
+    "description": "Smoke visible from second floor apartment",
+    "status": "active",
+    "caller": "Resident",
+    "units": ["ENG-9", "TRUCK-3", "BAT-1"]
+  },
+  {
+    "id": "EMG-003",
+    "time": "2025-10-08T14:25:00",
+    "severity": "medium",
+    "type": "Traffic Accident",
+    "location": {
+      "address": "I-40 & Charlotte Ave, Nashville, TN",
+      "coordinates": [-86.7889, 36.1699]
+    },
+    "description": "Multi-vehicle collision, minor injuries reported",
+    "status": "active",
+    "caller": "Witness",
+    "units": ["AMB-8", "POL-14"]
+  },
+  {
+    "id": "EMG-004",
+    "time": "2025-10-08T14:20:00",
+    "severity": "high",
+    "type": "Assault in Progress",
+    "location": {
+      "address": "500 James Robertson Pkwy, Nashville, TN",
+      "coordinates": [-86.7744, 36.1673]
+    },
+    "description": "Physical altercation reported, multiple individuals involved",
+    "status": "active",
+    "caller": "Bystander",
+    "units": ["POL-7", "POL-22"]
+  },
+  {
+    "id": "EMG-005",
+    "time": "2025-10-08T14:15:00",
+    "severity": "medium",
+    "type": "Medical Emergency",
+    "location": {
+      "address": "215 Centennial Park Dr, Nashville, TN",
+      "coordinates": [-86.8132, 36.1447]
+    },
+    "description": "Elderly person fell, possible hip fracture",
+    "status": "active",
+    "caller": "Family Member",
+    "units": ["AMB-15"]
+  },
+  {
+    "id": "EMG-006",
+    "time": "2025-10-08T14:10:00",
+    "severity": "low",
+    "type": "Noise Complaint",
+    "location": {
+      "address": "1600 Division St, Nashville, TN",
+      "coordinates": [-86.7934, 36.1523]
+    },
+    "description": "Loud music complaint from neighboring apartment",
+    "status": "active",
+    "caller": "Resident",
+    "units": ["POL-31"]
+  },
+  {
+    "id": "EMG-007",
+    "time": "2025-10-08T14:05:00",
+    "severity": "critical",
+    "type": "Building Collapse",
+    "location": {
+      "address": "300 Korean Veterans Blvd, Nashville, TN",
+      "coordinates": [-86.7695, 36.1589]
+    },
+    "description": "Partial roof collapse at construction site, workers trapped",
+    "status": "active",
+    "caller": "Site Supervisor",
+    "units": ["ENG-2", "TRUCK-1", "RESCUE-1", "AMB-3", "AMB-6"]
+  },
+  {
+    "id": "EMG-008",
+    "time": "2025-10-08T14:00:00",
+    "severity": "medium",
+    "type": "Gas Leak",
+    "location": {
+      "address": "1901 Broadway, Nashville, TN",
+      "coordinates": [-86.7989, 36.1518]
+    },
+    "description": "Strong gas odor reported in residential area",
+    "status": "active",
+    "caller": "Resident",
+    "units": ["ENG-11", "HAZ-1"]
+  }
+]
