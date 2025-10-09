@@ -22,29 +22,33 @@ def geocode_location(location_text):
     """
     Geocode a location string to lat/lon using AWS Location Service
     Returns (latitude, longitude) or (0.0, 0.0) if failed
+
+    Always assumes Nashville, TN for this project
     """
     if not location_text or location_text == 'unknown':
         print("⚠️  No location text to geocode")
         return 0.0, 0.0
 
     try:
-        print(f"🌍 Geocoding location: '{location_text}'")
+        # Always append Nashville, TN to ensure accurate geocoding
+        search_text = f"{location_text}, Nashville, TN"
+        print(f"🌍 Geocoding with Nashville default: '{search_text}'")
 
         response = location_client.search_place_index_for_text(
             IndexName=LOCATION_INDEX,
-            Text=location_text,
+            Text=search_text,
             MaxResults=1
         )
 
         if not response.get('Results'):
-            print(f"⚠️  No geocoding results found for '{location_text}'")
+            print(f"⚠️  No geocoding results found for '{search_text}'")
             return 0.0, 0.0
 
         # AWS Location returns [longitude, latitude]
         coords = response['Results'][0]['Place']['Geometry']['Point']
         longitude, latitude = coords[0], coords[1]
 
-        print(f"✅ Geocoded '{location_text}' → lat: {latitude}, lon: {longitude}")
+        print(f"✅ Geocoded '{search_text}' → lat: {latitude}, lon: {longitude}")
         return latitude, longitude
 
     except Exception as e:
