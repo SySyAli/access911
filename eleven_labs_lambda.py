@@ -51,7 +51,7 @@ Return the coordinates as a JSON object with this exact format:
 Be as precise as possible. For Nashville, TN addresses, use your knowledge of the city's geography to determine the most accurate coordinates. Do not include any explanation, only the JSON."""
 
         payload = {
-            "model": "gpt-4o-mini",
+            "model": "gpt-5",
             "messages": [
                 {"role": "system", "content": "You are a precise geocoding API that returns coordinates in JSON format only."},
                 {"role": "user", "content": prompt}
