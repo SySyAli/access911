@@ -59,8 +59,47 @@ if AWS_ACCESS_KEY and AWS_SECRET_KEY:
 data_dir = Path("webhook_data")
 data_dir.mkdir(exist_ok=True)
 
-def save_to_dynamodb(conversation_id: str, timestamp: int, call_data: dict, analysis: dict) -> bool:
-    """Save call data to DynamoDB"""
+def extract_metadata_from_elevenlabs(analysis: dict) -> dict:
+    """
+    Extract metadata from ElevenLabs data_collection_results.
+    The ElevenLabs agent should be configured to collect these fields during the call.
+
+    ElevenLabs returns data in this format:
+    {
+        'field_name': {
+            'value': 'actual_value',
+            'rationale': 'why the agent chose this value',
+            ...
+        }
+    }
+    """
+    data_collection = analysis.get('data_collection_results', {})
+
+    # Helper function to extract 'value' from the nested structure
+    def get_value(field_data, default):
+        if isinstance(field_data, dict):
+            return field_data.get('value', default)
+        return field_data if field_data is not None else default
+
+    metadata = {
+        'emergency_type': get_value(data_collection.get('emergency_type'), 'unknown'),
+        'location': get_value(data_collection.get('location'), 'unknown'),
+        'latitude': float(get_value(data_collection.get('latitude'), 0.0)),
+        'longitude': float(get_value(data_collection.get('longitude'), 0.0)),
+        'severity': get_value(data_collection.get('severity'), 'unknown')
+    }
+
+    print(f"\n🔍 EXTRACTED METADATA (from ElevenLabs agent):")
+    print(f"   Type: {metadata['emergency_type']}")
+    print(f"   Location: {metadata['location']}")
+    print(f"   Latitude: {metadata['latitude']}")
+    print(f"   Longitude: {metadata['longitude']}")
+    print(f"   Severity: {metadata['severity']}")
+
+    return metadata
+
+def save_to_dynamodb(conversation_id: str, timestamp: int, call_data: dict, analysis: dict, metadata: dict = None) -> bool:
+    """Save call data to DynamoDB with extracted metadata"""
     if not dynamodb or not DYNAMODB_TABLE:
         print(f"   ⚠️  DynamoDB not configured, skipping")
         return False
@@ -78,6 +117,14 @@ def save_to_dynamodb(conversation_id: str, timestamp: int, call_data: dict, anal
             'transcript_length': len(call_data.get('transcript', [])),
             'created_at': datetime.now().isoformat()
         }
+
+        # Add metadata extracted by ElevenLabs agent
+        if metadata:
+            item['emergency_type'] = metadata.get('emergency_type', 'unknown')
+            item['location'] = metadata.get('location', 'unknown')
+            item['latitude'] = metadata.get('latitude', 0.0)
+            item['longitude'] = metadata.get('longitude', 0.0)
+            item['severity'] = metadata.get('severity', 'unknown')
 
         table.put_item(Item=item)
         print(f"   ✅ DynamoDB: Saved to table '{DYNAMODB_TABLE}'")
@@ -233,12 +280,16 @@ async def webhook(request: Request):
                     f.write(json.dumps(data) + "\n")
                 print(f"   Local Log: {log_file}")
 
-                # 9. SAVE TO DYNAMODB
+                # 8.5 EXTRACT METADATA from ElevenLabs data_collection_results
+                metadata = extract_metadata_from_elevenlabs(analysis)
+
+                # 9. SAVE TO DYNAMODB (with extracted metadata)
                 save_to_dynamodb(
                     conversation_id=conv_id,
                     timestamp=event_timestamp,
                     call_data=call_data,
-                    analysis=analysis
+                    analysis=analysis,
+                    metadata=metadata
                 )
 
                 # 10. SAVE TO S3
