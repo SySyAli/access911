@@ -10,49 +10,80 @@ from decimal import Decimal
 # Initialize AWS clients
 dynamodb = boto3.resource('dynamodb')
 s3_client = boto3.client('s3')
-location_client = boto3.client('location')
 
 # Environment variables (set in Lambda configuration)
 DYNAMODB_TABLE = os.environ.get('DYNAMODB_TABLE', 'elevenlabs-call-data')
 S3_BUCKET = os.environ.get('S3_BUCKET', 'elevenlabs-webhooks')
 WEBHOOK_SECRET = os.environ.get('WEBHOOK_SECRET', '')
-LOCATION_INDEX = os.environ.get('LOCATION_INDEX', 'elevenlabs-place-index')
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '')
 
 def geocode_location(location_text):
     """
-    Geocode a location string to lat/lon using AWS Location Service
+    Geocode a location string to lat/lon using OpenAI GPT
     Returns (latitude, longitude) or (0.0, 0.0) if failed
 
     Always assumes Nashville, TN for this project
+    Uses GPT to determine precise coordinates based on location knowledge
     """
     if not location_text or location_text == 'unknown':
         print("⚠️  No location text to geocode")
         return 0.0, 0.0
 
-    try:
-        # Always append Nashville, TN to ensure accurate geocoding
-        search_text = f"{location_text}, Nashville, TN"
-        print(f"🌍 Geocoding with Nashville default: '{search_text}'")
+    if not OPENAI_API_KEY:
+        print("⚠️  OpenAI API key not configured")
+        return 0.0, 0.0
 
-        response = location_client.search_place_index_for_text(
-            IndexName=LOCATION_INDEX,
-            Text=search_text,
-            MaxResults=1
+    try:
+        import urllib.request
+
+        # Always append Nashville, TN for context
+        search_text = f"{location_text}, Nashville, TN"
+        print(f"🤖 Using GPT to geocode: '{search_text}'")
+
+        # Prepare OpenAI API request
+        prompt = f"""You are a precise geocoding system. Given an address, return ONLY the exact latitude and longitude coordinates in JSON format.
+
+Address: {search_text}
+
+Return the coordinates as a JSON object with this exact format:
+{{"latitude": <number>, "longitude": <number>}}
+
+Be as precise as possible. For Nashville, TN addresses, use your knowledge of the city's geography to determine the most accurate coordinates. Do not include any explanation, only the JSON."""
+
+        payload = {
+            "model": "gpt-4o-mini",
+            "messages": [
+                {"role": "system", "content": "You are a precise geocoding API that returns coordinates in JSON format only."},
+                {"role": "user", "content": prompt}
+            ],
+            "response_format": {"type": "json_object"},
+            "temperature": 0
+        }
+
+        req = urllib.request.Request(
+            'https://api.openai.com/v1/chat/completions',
+            data=json.dumps(payload).encode('utf-8'),
+            headers={
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {OPENAI_API_KEY}'
+            }
         )
 
-        if not response.get('Results'):
-            print(f"⚠️  No geocoding results found for '{search_text}'")
-            return 0.0, 0.0
+        with urllib.request.urlopen(req, timeout=10) as response:
+            result = json.loads(response.read().decode())
 
-        # AWS Location returns [longitude, latitude]
-        coords = response['Results'][0]['Place']['Geometry']['Point']
-        longitude, latitude = coords[0], coords[1]
+        # Parse GPT response
+        coords_json = json.loads(result['choices'][0]['message']['content'])
+        latitude = float(coords_json['latitude'])
+        longitude = float(coords_json['longitude'])
 
-        print(f"✅ Geocoded '{search_text}' → lat: {latitude}, lon: {longitude}")
+        print(f"✅ GPT geocoded '{search_text}' → lat: {latitude}, lon: {longitude}")
         return latitude, longitude
 
     except Exception as e:
-        print(f"❌ Geocoding error: {e}")
+        print(f"❌ GPT geocoding error: {e}")
+        import traceback
+        traceback.print_exc()
         return 0.0, 0.0
 
 def extract_metadata_from_elevenlabs(analysis):
