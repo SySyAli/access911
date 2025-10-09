@@ -10,29 +10,74 @@ from decimal import Decimal
 # Initialize AWS clients
 dynamodb = boto3.resource('dynamodb')
 s3_client = boto3.client('s3')
+location_client = boto3.client('location')
 
 # Environment variables (set in Lambda configuration)
 DYNAMODB_TABLE = os.environ.get('DYNAMODB_TABLE', 'elevenlabs-call-data')
 S3_BUCKET = os.environ.get('S3_BUCKET', 'elevenlabs-webhooks')
 WEBHOOK_SECRET = os.environ.get('WEBHOOK_SECRET', '')
+LOCATION_INDEX = os.environ.get('LOCATION_INDEX', 'elevenlabs-place-index')
+
+def geocode_location(location_text):
+    """
+    Geocode a location string to lat/lon using AWS Location Service
+    Returns (latitude, longitude) or (0.0, 0.0) if failed
+    """
+    if not location_text or location_text == 'unknown':
+        print("⚠️  No location text to geocode")
+        return 0.0, 0.0
+
+    try:
+        print(f"🌍 Geocoding location: '{location_text}'")
+
+        response = location_client.search_place_index_for_text(
+            IndexName=LOCATION_INDEX,
+            Text=location_text,
+            MaxResults=1
+        )
+
+        if not response.get('Results'):
+            print(f"⚠️  No geocoding results found for '{location_text}'")
+            return 0.0, 0.0
+
+        # AWS Location returns [longitude, latitude]
+        coords = response['Results'][0]['Place']['Geometry']['Point']
+        longitude, latitude = coords[0], coords[1]
+
+        print(f"✅ Geocoded '{location_text}' → lat: {latitude}, lon: {longitude}")
+        return latitude, longitude
+
+    except Exception as e:
+        print(f"❌ Geocoding error: {e}")
+        return 0.0, 0.0
 
 def extract_metadata_from_elevenlabs(analysis):
     """Extract metadata from ElevenLabs data_collection_results"""
     data_collection = analysis.get('data_collection_results', {})
-    
+
     def get_value(field_data, default):
         if isinstance(field_data, dict):
             return field_data.get('value', default)
         return field_data if field_data is not None else default
-    
+
+    # Extract basic metadata
+    location_text = get_value(data_collection.get('location'), 'unknown')
+    latitude = float(get_value(data_collection.get('latitude'), 0.0))
+    longitude = float(get_value(data_collection.get('longitude'), 0.0))
+
+    # If ElevenLabs didn't provide coordinates, geocode the location text
+    if (latitude == 0.0 or longitude == 0.0) and location_text != 'unknown':
+        print(f"🔍 ElevenLabs coordinates missing, attempting geocoding...")
+        latitude, longitude = geocode_location(location_text)
+
     metadata = {
         'emergency_type': get_value(data_collection.get('emergency_type'), 'unknown'),
-        'location': get_value(data_collection.get('location'), 'unknown'),
-        'latitude': float(get_value(data_collection.get('latitude'), 0.0)),
-        'longitude': float(get_value(data_collection.get('longitude'), 0.0)),
+        'location': location_text,
+        'latitude': latitude,
+        'longitude': longitude,
         'severity': get_value(data_collection.get('severity'), 'unknown')
     }
-    
+
     print(f"Extracted metadata: {metadata}")
     return metadata
 
