@@ -1,6 +1,6 @@
-# dispatchAI
+# access911
 
-DispatchAI is an experimental emergency-response platform that demonstrates how modern AI and cloud services can augment 911 call handling during high-demand incidents. The system captures live voice calls through an AI voice agent (ElevenLabs), processes and enriches call transcripts and metadata, stores records in AWS (DynamoDB + S3), and feeds a front-end dashboard with a map visualization. A simulation API can generate large batches of synthetic incidents (using AWS Bedrock or templates) to test scale and operator workflows.
+access911 is an experimental emergency-response platform that demonstrates how modern AI and cloud services can augment 911 call handling during high-demand incidents. The system captures live voice calls through an AI voice agent (ElevenLabs), processes and enriches call transcripts and metadata, stores records in AWS (DynamoDB + S3), and feeds a front-end dashboard with a map visualization. A simulation API can generate large batches of synthetic incidents (using AWS Bedrock or templates) to test scale and operator workflows.
 
 Key goals
 - Provide a human-in-the-loop system for emergency call intake where an AI voice-agent handles the initial contact and extracts structured metadata.
