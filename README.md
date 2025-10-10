@@ -1,25 +1,6 @@
 # access911
 
-access911 is an experimental emergency-response platform that demonstrates how modern AI and cloud services can augment 911 call handling during high-demand incidents. The system captures live voice calls through an AI voice agent (ElevenLabs), processes and enriches call transcripts and metadata, stores records in AWS (DynamoDB + S3), and feeds a front-end dashboard with a map visualization. A simulation API can generate large batches of synthetic incidents (using AWS Bedrock or templates) to test scale and operator workflows.
-
-Key goals
-- Provide a human-in-the-loop system for emergency call intake where an AI voice-agent handles the initial contact and extracts structured metadata.
-- Persist full call records and concise summaries to AWS (S3 and DynamoDB) for operator review and downstream analysis.
-- Offer a simulation mode to stress-test the pipeline and populate the dashboard with realistic, varied incidents.
-
-This repository contains the server-side pieces (Lambda handlers, simulators, utilities) and documentation required to run and experiment with the project.
-
-## High-level architecture
-
-1. Caller interacts with an AI voice agent (ElevenLabs) which runs the voice session and performs transcription/analysis.
-2. ElevenLabs forwards a webhook to an API Gateway endpoint.
-3. API Gateway triggers a Lambda function (e.g. `eleven_labs_lambda.py`) which:
-	 - Verifies the webhook signature (optional, via `WEBHOOK_SECRET`),
-	 - Extracts transcript, analysis and structured metadata (emergency type, location, severity),
-	 - Geocodes the text location with AWS Location Service (fallback),
-	 - Stores a summarized record into DynamoDB and the full payload into S3.
-4. A simulator Lambda (`wildfire-simulator-lambda.py`) or a local script can generate synthetic call data. For small batches it may call Bedrock to produce human-like summaries; for large batches it uses templates for throughput.
-5. A frontend (not included here) consumes DynamoDB/S3 outputs and renders calls on a map for operators.
+access911 is a voice agent response platform.
 
 ## Architecture Diagram
 
