@@ -4,7 +4,7 @@ access911 is a voice agent response platform.
 
 ## Documentation
 
-📚 **Full Documentation**: [kunalbham.mintlify.app](https://kunalbham.mintlify.app)
+[Documentation](https://kunalbham.mintlify.app)
 
 ## Architecture Diagram
 
