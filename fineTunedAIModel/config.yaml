@@ -1,0 +1,34 @@
+# 911 Call Fine-tuning Configuration
+
+# Model settings
+model_name: "microsoft/DialoGPT-medium"  # Good for conversational AI
+# Alternative models you can try:
+# - "microsoft/DialoGPT-small" (faster, smaller)
+# - "microsoft/DialoGPT-large" (slower, better quality)
+# - "gpt2" (original GPT-2)
+# - "gpt2-medium" (larger GPT-2)
+
+# Training parameters
+epochs: 3
+batch_size: 4  # Reduce if you get out of memory errors
+learning_rate: 5e-5
+max_length: 512  # Maximum sequence length
+
+# Data settings
+train_split: 0.8  # 80% for training, 20% for evaluation
+validation_split: 0.2
+
+# Output settings
+output_dir: "./911-fine-tuned-model"
+save_steps: 500
+eval_steps: 100
+logging_steps: 10
+
+# Hardware settings
+use_fp16: true  # Use half precision if GPU available
+dataloader_num_workers: 0  # Set to 0 on Windows to avoid issues
+
+# Advanced settings
+warmup_steps: 100
+weight_decay: 0.01
+save_total_limit: 2  # Keep only 2 best checkpoints
