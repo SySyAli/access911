@@ -122,12 +122,15 @@ def lambda_handler(event, context):
     print(f"Generating {num_calls} calls to table {table_name}")
     print(f"Generation method: {generation_method}")
     
+    # Generate unique locations for all calls upfront
+    unique_locations = generate_unique_locations(num_calls, scenario)
+    
     generated_calls = []
     errors = []
     
     for i in range(num_calls):
         try:
-            call = generate_call(i, num_calls, scenario, scenario_name, use_ai)
+            call = generate_call(i, num_calls, scenario, scenario_name, use_ai, unique_locations[i])
             table.put_item(Item=call)
             
             generated_calls.append({
@@ -164,24 +167,75 @@ def lambda_handler(event, context):
         }, indent=2)
     }
 
-def generate_call(idx, total, scenario, scenario_name, use_ai):
-    """Generate a single emergency call"""
+def generate_unique_locations(num_calls, scenario):
+    """
+    Generate unique locations for all calls to ensure no duplicates
+    """
+    unique_locations = []
+    used_addresses = set()
+    
+    for i in range(num_calls):
+        attempts = 0
+        max_attempts = 100  # Prevent infinite loops
+        
+        while attempts < max_attempts:
+            # Select random location
+            location = random.choice(scenario['locations'])
+            
+            # Add variance to coordinates
+            lat = location['lat'] + random.uniform(-0.02, 0.02)
+            lon = location['lon'] + random.uniform(-0.02, 0.02)
+            
+            # Generate address
+            street = random.choice(scenario['streets'])
+            street_num = random.randint(100, 2999)
+            address = f"{street_num} {street}, {location['area']}"
+            
+            # Create unique identifier for this location
+            location_key = f"{address}_{round(lat, 4)}_{round(lon, 4)}"
+            
+            if location_key not in used_addresses:
+                used_addresses.add(location_key)
+                unique_locations.append({
+                    'location': location,
+                    'lat': lat,
+                    'lon': lon,
+                    'address': address
+                })
+                break
+            
+            attempts += 1
+        
+        # If we couldn't find a unique location, use the last one with slight variation
+        if attempts >= max_attempts:
+            location = random.choice(scenario['locations'])
+            lat = location['lat'] + random.uniform(-0.05, 0.05)  # Larger variance
+            lon = location['lon'] + random.uniform(-0.05, 0.05)
+            street = random.choice(scenario['streets'])
+            street_num = random.randint(100, 2999)
+            address = f"{street_num} {street}, {location['area']}"
+            
+            unique_locations.append({
+                'location': location,
+                'lat': lat,
+                'lon': lon,
+                'address': address
+            })
+    
+    return unique_locations
+
+def generate_call(idx, total, scenario, scenario_name, use_ai, unique_location):
+    """Generate a single emergency call with unique location"""
     
     # Generate unique identifiers
     ts = int(time.time()) + idx
     call_id = f"{scenario_name.upper()}-{ts}-{random.randint(1000, 9999)}"
     
-    # Select random location
-    location = random.choice(scenario['locations'])
-    
-    # Add variance to coordinates
-    lat = location['lat'] + random.uniform(-0.02, 0.02)
-    lon = location['lon'] + random.uniform(-0.02, 0.02)
-    
-    # Generate address
-    street = random.choice(scenario['streets'])
-    street_num = random.randint(100, 2999)
-    address = f"{street_num} {street}, {location['area']}"
+    # Use the pre-generated unique location
+    location = unique_location['location']
+    lat = unique_location['lat']
+    lon = unique_location['lon']
+    address = unique_location['address']
     
     # Select emergency type
     emergency = random.choice(scenario['emergency_types'])

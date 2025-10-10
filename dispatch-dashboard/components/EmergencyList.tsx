@@ -72,7 +72,7 @@ const EmergencyList: React.FC<EmergencyListProps> = ({
           padding: '14px 14px' 
         }}>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-2xl font-bold tracking-tight" style={{ color: theme === 'dark' ? '#ffffff' : '#000000' }}>Active Calls</h2>
+            <h2 className="text-2xl font-bold tracking-tight" style={{ color: theme === 'dark' ? '#ffffff' : '#000000' }}>Active Calls (844-543-4582)</h2>
           </div>
           <p className="text-sm" style={{ color: '#888888' }}>
             Real-time emergency monitoring

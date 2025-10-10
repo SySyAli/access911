@@ -230,7 +230,7 @@ const Sidebar: React.FC<SidebarProps> = ({ cityName, activeCount, theme, activeT
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
             }}
           >
-            Analytics
+            Simulation
           </div>
         </button>
       </nav>

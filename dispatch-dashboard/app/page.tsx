@@ -8,6 +8,7 @@ import Sidebar from '@/components/Sidebar';
 import EmergencyList from '@/components/EmergencyList';
 import CitySelector from '@/components/CitySelector';
 import History from '@/components/History';
+import LiveCallVisualizer from '@/components/LiveCallVisualizer';
 import { Emergency, City } from '@/types/emergency';
 import emergenciesData from '@/data/emergencies.json';
 
@@ -237,30 +238,23 @@ export default function Home() {
         </div>
       )}
 
-      {/* Analytics View - Placeholder */}
+      {/* Analytics/Live Monitor View */}
       {activeTab === 'analytics' && (
-        <div className="absolute left-24 right-0 top-0 bottom-0 flex items-center justify-center">
-          <div className="text-center">
-            <svg 
-              className="w-24 h-24 mx-auto mb-4" 
-              style={{ color: theme === 'dark' ? '#ffffff' : '#000000', opacity: 0.3 }}
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <h2 
-              className="text-2xl font-bold mb-2" 
-              style={{ color: theme === 'dark' ? '#ffffff' : '#000000' }}
-            >
-              Analytics Coming Soon
-            </h2>
-            <p style={{ color: theme === 'dark' ? '#666666' : '#999999' }}>
-              Advanced analytics and reporting features will be available here
-            </p>
+        <>
+          <div className="absolute left-24 right-0 top-0 bottom-0">
+            <Map
+              center={city.coordinates}
+              zoom={city.zoom}
+              emergencies={emergencies}
+              selectedEmergency={selectedEmergency}
+              theme={theme}
+            />
+            <CitySelector currentCity={city} onCityChange={setCity} theme={theme} />
           </div>
-        </div>
+          
+          {/* Live Call Visualizer Overlay */}
+          <LiveCallVisualizer theme={theme} />
+        </>
       )}
 
     </main>
