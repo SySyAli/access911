@@ -96,6 +96,12 @@ export default function Home() {
               return String(field);
             };
 
+            // Helper function to capitalize strings properly
+            const capitalize = (str: string): string => {
+              if (!str) return '';
+              return str.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+            };
+
             // Extract coordinates
             const latitude = parseFloat(item.latitude) || parseFloat(item.emergency_t_latitude) || 36.1627;
             const longitude = parseFloat(item.longitude) || 0;
@@ -113,14 +119,14 @@ export default function Home() {
               id: cleanId,
               time: item.timestamp || item.created_at || item.conversation_timestamp || new Date().toISOString(),
               severity: severity as 'critical' | 'high' | 'medium' | 'low',
-              type: extractString(item.emergency_t || item.emergency_type, 'Emergency Call'),
+              type: capitalize(extractString(item.emergency_t || item.emergency_type, 'Emergency Call')),
               location: {
-                address: extractString(item.location, 'Unknown Location'),
+                address: capitalize(extractString(item.location, 'Unknown Location')),
                 coordinates: [longitude, latitude] as [number, number],
               },
-              description: extractString(item.summary, 'No description available'),
+              description: capitalize(extractString(item.summary, 'No description available')),
               status: 'active' as const,
-              caller: extractString(item.agent_id, 'Caller'),
+              caller: capitalize(extractString(item.agent_id, 'Caller')),
               units: [], // DynamoDB table doesn't have units, will be empty
             };
           });
