@@ -21,9 +21,11 @@ This repository contains the server-side pieces (Lambda handlers, simulators, ut
 4. A simulator Lambda (`wildfire-simulator-lambda.py`) or a local script can generate synthetic call data. For small batches it may call Bedrock to produce human-like summaries; for large batches it uses templates for throughput.
 5. A frontend (not included here) consumes DynamoDB/S3 outputs and renders calls on a map for operators.
 
-Diagram (conceptual):
-TODO: REPLACE THIS WITH ACTUAL IMAGE
-Caller (phone) → ElevenLabs voice agent → API Gateway → Lambda → DynamoDB / S3 → Frontend map
+## Architecture Diagram
+
+![ACCESS911 Architecture](architecture.png)
+
+**Data Flow**: Caller (phone) → ElevenLabs voice agent → API Gateway → Lambda → DynamoDB / S3 → Frontend map
 																						 ↘ Bedrock (simulation & models)
 
 ## What’s in this repo
