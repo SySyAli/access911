@@ -74,10 +74,4 @@ After fine-tuning, you can:
 ## Requirements
 
 - Python 3.8+
-- CUDA-compatible GPU (recommended)
-- 8GB+ RAM
 - 5GB+ free disk space
-
-## License
-
-MIT
