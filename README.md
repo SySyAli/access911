@@ -1,5 +1,7 @@
 # access911
 
+### **3rd Place Winner in the AWS x Vanderbilt University Mission Autonomy Hackathon**
+
 access911 is a voice agent response platform.
 
 ## Documentation
